@@ -30,3 +30,9 @@ test('renders a increment button', () => {
   const incrementButton = findByTestAttr(wrapper, 'increment-button')
   expect(incrementButton.length).toBe(1)
 })
+
+test('counter starts at 0', () => {
+  const wrapper = setup();
+  const initialCounterState = wrapper.useState('counter')
+  expect(initialCounterState).toBe(0)
+})
