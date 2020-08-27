@@ -6,7 +6,12 @@ import App from './App';
 Enzyme.configure({ adapter: new EnzymeAdapter() })
 
 const setup = (props = {}, state = null) => {
-  return shallow(<App {...props}/>)
+  const wrapper = shallow(<App {...props}/>)
+  // 如果有帶 state 進來將會加上去
+  if(state){
+    wrapper.setState(state)
+  }
+  return wrapper
 }
 
 const findByTestAttr = (wrapper, value) => {
@@ -33,6 +38,20 @@ test('renders a increment button', () => {
 
 test('counter starts at 0', () => {
   const wrapper = setup();
-  const initialCounterState = wrapper.useState('counter')
+  const initialCounterState = wrapper.state('counter')
   expect(initialCounterState).toBe(0)
+})
+
+test('clicking button increments counter display', () => {
+  const counter = 7
+  // 將 state 帶進去
+  const wrapper = setup(null, {counter});
+  // 找到 increment button
+  const incrementButton = findByTestAttr(wrapper, 'increment-button')
+  // 模擬 event
+  incrementButton.simulate('click')
+  // 找到將顯示出來的 state
+  const counterDisplay = findByTestAttr(wrapper, 'counter-display')
+  // 看顯示出來的 state 是否有改變
+  expect(counterDisplay.text()).toContain(counter + 1)
 })
