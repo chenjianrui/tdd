@@ -50,8 +50,17 @@ test('clicking button increments counter display', () => {
   const incrementButton = findByTestAttr(wrapper, 'increment-button')
   // 模擬 event
   incrementButton.simulate('click')
-  // 找到將顯示出來的 state
+  // 找到將顯示出來 state 的 node(s)
   const counterDisplay = findByTestAttr(wrapper, 'counter-display')
   // 看顯示出來的 state 是否有改變
   expect(counterDisplay.text()).toContain(counter + 1)
+})
+
+test('clicking button decrements counter display', () => {
+  const counter = 5;
+  const wrapper = setup(null, { counter })
+  const decrementButton = findByTestAttr(wrapper, 'decrement-button')
+  decrementButton.simulate('click')
+  const counterDisplay = findByTestAttr(wrapper, 'counter-display')
+  expect(counterDisplay.text()).toContain(counter - 1)
 })
