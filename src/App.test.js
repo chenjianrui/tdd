@@ -85,7 +85,7 @@ describe('counter is 0 and decrement is clicked', () => {
 
   test('show error', () => {
     const errorMsg = findByTestAttr(wrapper, 'error-message')
-    // hasClass 是 enyzme API，找 DOM 是否有讓 class
+    // hasClass 是 enzyme API，找 DOM 是否有該 class
     const errorClass = errorMsg.hasClass('hidden')
     expect(errorClass).toBe(false)
   })
@@ -99,7 +99,7 @@ describe('counter is 0 and decrement is clicked', () => {
     const incrementButton = findByTestAttr(wrapper, 'increment-button')
     incrementButton.simulate('click')
 
-    // 再看錯誤訊息是否確定隱藏了
+    // 再看錯誤訊息是否確定有該 class name
     const errorMsg = findByTestAttr(wrapper, 'error-message')
     const errorClass = errorMsg.hasClass('hidden')
     expect(errorClass).toBe(true)
