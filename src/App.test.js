@@ -50,8 +50,58 @@ test('clicking button increments counter display', () => {
   const incrementButton = findByTestAttr(wrapper, 'increment-button')
   // 模擬 event
   incrementButton.simulate('click')
-  // 找到將顯示出來的 state
+  // 找到將顯示出來 state 的 node(s)
   const counterDisplay = findByTestAttr(wrapper, 'counter-display')
   // 看顯示出來的 state 是否有改變
   expect(counterDisplay.text()).toContain(counter + 1)
+})
+
+test('clicking button decrements counter display', () => {
+  const counter = 5;
+  const wrapper = setup(null, { counter })
+  const decrementButton = findByTestAttr(wrapper, 'decrement-button')
+  decrementButton.simulate('click')
+  const counterDisplay = findByTestAttr(wrapper, 'counter-display')
+  expect(counterDisplay.text()).toContain(counter - 1)
+})
+
+test('error does not show when not needed', () => {
+  const wrapper = setup();
+  const errorMsg = findByTestAttr(wrapper, 'error-message')
+  const errorClass = errorMsg.hasClass('hidden')
+  expect(errorClass).toBe(true)
+})
+// describe 可分類描述各別的 function 測試，會比較清楚在測試哪個 function
+describe('counter is 0 and decrement is clicked', () => {
+  let wrapper;
+
+  // beforeEach 在測試下面 test 時都會先跑一遍
+  beforeEach(() => {
+    wrapper = setup();
+
+    const decrementButton = findByTestAttr(wrapper, 'decrement-button')
+    decrementButton.simulate('click')
+  })
+
+  test('show error', () => {
+    const errorMsg = findByTestAttr(wrapper, 'error-message')
+    // hasClass 是 enyzme API，找 DOM 是否有讓 class
+    const errorClass = errorMsg.hasClass('hidden')
+    expect(errorClass).toBe(false)
+  })
+  test('counter still displays 0', () => {
+    const counterDisplay = findByTestAttr(wrapper, 'counter-display')
+    expect(counterDisplay.text()).toContain(0)
+  })
+
+  test('clicking increment clears the error', () => {
+    // 先模擬點擊 increment
+    const incrementButton = findByTestAttr(wrapper, 'increment-button')
+    incrementButton.simulate('click')
+
+    // 再看錯誤訊息是否確定隱藏了
+    const errorMsg = findByTestAttr(wrapper, 'error-message')
+    const errorClass = errorMsg.hasClass('hidden')
+    expect(errorClass).toBe(true)
+  })
 })
