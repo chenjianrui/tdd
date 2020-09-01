@@ -37,5 +37,27 @@ describe('if there are no words guessed', () => {
   })
 })
 describe('if there are words guessed', () => {
+  let wrapper;
+  const guessedWords = [
+    { guessedWord: 'Nick', letterMatchCount: 3 },
+    { guessedWord: 'Tony', letterMatchCount: 2 },
+    { guessedWord: 'Nic', letterMatchCount: 1 },
+  ]
+  beforeEach(() => {
+    wrapper = setup({ guessedWords })
+  })
 
+  test('renders without error', () => {
+    const component = findByTestAttr(wrapper, 'component-guessedWords')
+    expect(component.length).toBe(1)
+  })
+  test('renders "guessed words" section', () => {
+    const guessedWordsNode = findByTestAttr(wrapper, 'guessedWords')
+    expect(guessedWordsNode.length).toBe(1)
+  })
+  test('correct number of guessed words', () => {
+    const guessedWordNodes = findByTestAttr(wrapper, 'guessedWord')
+    // 比對模擬出來的 guessedWords 長度
+    expect(guessedWordNodes.length).toBe(guessedWords.length)
+  })
 })
