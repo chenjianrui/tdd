@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 
+import Congrats from './Jotto/Congrats'
+import GuessedWords from './Jotto/GuessedWords'
 
 class App extends Component {
   state = {
@@ -29,6 +31,11 @@ class App extends Component {
         <button onClick={this.handleIncrement} data-test="increment-button">Increment counter</button>
         <button onClick={this.handleDecrement} data-test="decrement-button">Decrement counter</button>
         <p className={errorClass} data-test="error-message">Counter can not less than 0</p>
+        <h2>Jotto</h2>
+        <Congrats success={false}/>
+        <GuessedWords guessedWords={[
+          { guessedWord: 'Nick', letterMatchCount: 3 }
+        ]}/>
       </div>
     );
   }
