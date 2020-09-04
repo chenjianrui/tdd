@@ -4,7 +4,9 @@ import { connect } from 'react-redux'
 class Input extends Component {
   render () {
     return (
-      <div />
+      <div>
+        <button />
+      </div>
     )
   }
 }
