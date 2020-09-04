@@ -3,16 +3,33 @@ import { connect } from 'react-redux'
 
 class Input extends Component {
   render () {
+    const contents = this.props.success ? 
+      null :
+      (
+        <form>
+          <input 
+            data-test="inputBox"
+            type="text"
+            placeholder="enter guess"
+          />
+          <button
+            data-test="submitButton" 
+            type="submit"
+          >
+            Submit
+          </button>
+        </form>
+      )
     return (
-      <div>
-        <button />
+      <div data-test="componentInput">
+        {contents}
       </div>
     )
   }
 }
 
-const mapStateToProps = state => {
-  return {}
+const mapStateToProps = ({ success }) => {
+  return { success }
 }
 
 export default connect(mapStateToProps)(Input)
