@@ -9,8 +9,9 @@ export const correctGuess = () => {
   }
 }
 
-export const guessWord = (guessWorded) => (dispatch, getState) => {
+export const guessWord = (guessedWord) => (dispatch, getState) => {
   return {
-    
+    type: actionTypes.GUESS_WORD,
+    payload: guessedWord
   }
 }
