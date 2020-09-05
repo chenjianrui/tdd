@@ -1,16 +1,9 @@
 import { actionTypes } from '../actions/index'
 
-const initialState = {
-  success: false
-}
-
-export default (state = initialState, action) => {
+export default (state = false, action) => {
   switch(action.type){
     case actionTypes.CORRECT_GUESS:
-      return {
-        ...state,
-        success: true
-      }
+      return true
     default:
       return state
   }
