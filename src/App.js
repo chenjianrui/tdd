@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
+import { connect } from 'react-redux'
 
 import Congrats from './Jotto/Congrats'
 import GuessedWords from './Jotto/GuessedWords'
+import Input from './Jotto/Input'
+import { getSecretWord } from './actions'
 
 class App extends Component {
   state = {
@@ -25,6 +28,7 @@ class App extends Component {
   }
   render () {
     const errorClass = this.state.errorMsg ? '' : 'hidden'
+    const { success, guessedWords } = this.props
     return (
       <div data-test="component-app">
         <h1 data-test="counter-display">This is a counter {this.state.counter}</h1>
@@ -32,13 +36,20 @@ class App extends Component {
         <button onClick={this.handleDecrement} data-test="decrement-button">Decrement counter</button>
         <p className={errorClass} data-test="error-message">Counter can not less than 0</p>
         <h2>Jotto</h2>
-        <Congrats success={false}/>
-        <GuessedWords guessedWords={[
-          { guessedWord: 'Nick', letterMatchCount: 3 }
-        ]}/>
+        <Congrats success={success}/>
+        <Input />
+        <GuessedWords guessedWords={guessedWords}/>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = ({ success, guessedWords, secretWord }) => {
+  return {
+    success,
+    guessedWords,
+    secretWord
+  }
+}
+
+export default connect(mapStateToProps, { getSecretWord })(App);
