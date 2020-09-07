@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme'
-import App from './App';
+import App, { UnconnectedApp } from './App';
 import { storeFactory } from './test/testUtil'
 
 // const setup = (props = {}, state = null) => {
@@ -138,5 +138,23 @@ describe('redux properties', () => {
     const wrapper = setup()
     const getSecretWordProp = wrapper.instance().props.getSecretWord
     expect(getSecretWordProp).toBeInstanceOf(Function)
+  })
+  test('`getSecretWord` runs on App mount', () => {
+    // jest.fn() 用來提供當作是 mock function，這裡是表示是 getSecretWord action creator，透過 props 傳入 App
+    const getSecretWordMock = jest.fn();
+    // 由於還有從 redux store 來的 props，所以也要傳入 mock props
+    const props = {
+      getSecretWord: getSecretWordMock,
+      success: false,
+      guessedWords: [] 
+    }
+    // 這裡不使用 setup 來創造 wrapper，因為 setup 是有連結到 redux
+    // 這邊直接創一個 shallow UnconnectedApp
+    const wrapper = shallow(<UnconnectedApp {...props}/>)
+    // 運行 componentDidMount
+    wrapper.instance().componentDidMount()
+    // 來測試呼叫次數
+    const getSecretWordMockCount = getSecretWordMock.mock.calls.length
+    expect(getSecretWordMockCount).toBe(1)
   })
 })

@@ -6,11 +6,14 @@ import Congrats from './Jotto/Congrats'
 import GuessedWords from './Jotto/GuessedWords'
 import Input from './Jotto/Input'
 import { getSecretWord } from './actions'
-
-class App extends Component {
+export class UnconnectedApp extends Component {
   state = {
     counter: 0,
     errorMsg: false
+  }
+
+  componentDidMount () {
+    this.props.getSecretWord();
   }
 
   handleIncrement = () => {
@@ -52,4 +55,4 @@ const mapStateToProps = ({ success, guessedWords, secretWord }) => {
   }
 }
 
-export default connect(mapStateToProps, { getSecretWord })(App);
+export default connect(mapStateToProps, { getSecretWord })(UnconnectedApp);
