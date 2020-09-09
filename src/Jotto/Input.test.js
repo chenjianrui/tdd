@@ -98,4 +98,7 @@ describe('`guessWord` action creator call', () => {
     // 所以預期結果應該要跟 setState 是一樣的
     expect(guessWordArgs).toBe(guessWord)
   })
+  test('input box clears on submit', () => {
+    expect(wrapper.state('currentGuess')).toBe('')
+  })
 })
