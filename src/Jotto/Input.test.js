@@ -2,7 +2,7 @@ import React from 'react'
 import { shallow } from 'enzyme'
 
 import { findByTestAttr, storeFactory } from '../test/testUtil'
-import Input from './Input'
+import Input, { UnconnectedInput } from './Input'
 
 const setup = (initialState = {}) => {
   const store = storeFactory(initialState)
@@ -64,5 +64,41 @@ describe('redux prop', () => {
     const wrapper = setup()
     const guessWordProp = wrapper.instance().props.guessWord
     expect(guessWordProp).toBeInstanceOf(Function)
+  })
+})
+
+describe('`guessWord` action creator call', () => {
+  let guessWordMock;
+  let wrapper;
+  let submit
+  let guessWord = 'train'
+  beforeEach(() => {
+    // 把 mock method 傳入 unconnected component
+    guessWordMock = jest.fn();
+    wrapper = shallow(<UnconnectedInput guessWord={guessWordMock}/>)
+    // 利用 setState 來更新 guessWord
+    wrapper.setState({ currentGuess: guessWord })
+    // 利用 simulate 來仿造一個行為，
+    submit = findByTestAttr(wrapper, 'submitButton')
+    // 如果 click or submit 有下 e.preventDefault 就可以這樣寫，事件處理的方式
+    submit.simulate('click', {
+      preventDefault: () => {}
+    })
+  })
+  test('`guessWord` when button is clicked', () => {
+    // 以呼叫的次數來測試是否有呼叫
+    const guessWordMockCount = guessWordMock.mock.calls.length
+    expect(guessWordMockCount).toBe(1)
+  })
+  test('`guessWord` with input value as args', () => {
+    // 來驗証按出 submit 後，guessWord 所帶的 args 是否如預期
+    // guessWordMock.mock.calls -> [['']] (第一次呼叫，然後第一次呼叫所帶的 args)
+    // 雙陣列裡是 guessWord 帶過來的 args
+    const guessWordArgs = guessWordMock.mock.calls[0][0]
+    // 所以預期結果應該要跟 setState 是一樣的
+    expect(guessWordArgs).toBe(guessWord)
+  })
+  test('input box clears on submit', () => {
+    expect(wrapper.state('currentGuess')).toBe('')
   })
 })
